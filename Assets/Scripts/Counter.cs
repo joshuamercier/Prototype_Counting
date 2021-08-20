@@ -6,18 +6,21 @@ using UnityEngine.UI;
 
 public class Counter : MonoBehaviour
 {
+    // Class variables
     public Text CounterText;
 
-    private int Count = 0;
+    [SerializeField] int pointsValue;
+    [SerializeField] GameManager gameManager;
 
     private void Start()
     {
-        Count = 0;
+        gameManager.score = 0;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Count += 1;
-        CounterText.text = "Count : " + Count;
+        gameManager.score += pointsValue;
+        CounterText.text = "Score : " + gameManager.score;
+        Destroy(other);
     }
 }
