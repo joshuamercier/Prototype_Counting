@@ -21,6 +21,6 @@ public class Counter : MonoBehaviour
     {
         gameManager.score += pointsValue;
         CounterText.text = "Score : " + gameManager.score;
-        Destroy(other);
+        Destroy(other.gameObject);
     }
 }
