@@ -11,6 +11,7 @@ public class Counter : MonoBehaviour
 
     [SerializeField] int pointsValue;
     [SerializeField] GameManager gameManager;
+    [SerializeField] GameObject ball;
 
     private void Start()
     {
@@ -19,8 +20,17 @@ public class Counter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Increment score by value
         gameManager.score += pointsValue;
+        // Update UI
         CounterText.text = "Score : " + gameManager.score;
-        Destroy(other.gameObject);
+        // Stop player gravity and reallow to drop
+        other.attachedRigidbody.useGravity = false;
+        gameManager.canDrop = true;
+        // Reset player velocity and angular velocity
+        other.attachedRigidbody.velocity = Vector3.zero;
+        other.attachedRigidbody.angularVelocity = Vector3.zero;
+        // Reset player position to spawn point
+        other.transform.position = gameManager.spawnPos;
     }
 }
