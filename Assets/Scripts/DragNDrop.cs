@@ -11,18 +11,20 @@ public class DragNDrop : MonoBehaviour
     bool isMouseDragging;
     Vector3 offsetValue;
     Vector3 positionOfScreen;
+    private GameManager gameManager;
+    [SerializeField] GameObject player;
 
     // Use this for initialization
     void Start()
     {
-
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void Update()
     {
 
         //Mouse Button Press Down
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && gameManager.canDrop)
         {
             RaycastHit hitInfo;
             getTarget = ReturnClickedObject(out hitInfo);
@@ -52,6 +54,15 @@ public class DragNDrop : MonoBehaviour
 
             //It will update target gameobject's current postion.
             getTarget.transform.position = currentPosition;
+
+            // Check that player doesn't try to cheat
+            if ((currentPosition.y < 4.8 || currentPosition.z >= gameManager.boundary || currentPosition.z <= -gameManager.boundary) && gameManager.canDrop)
+            {
+                gameManager.IncrementScore(gameManager.pointPenalty);
+                // Reset player position to spawn point
+                player.GetComponent<PlayerController>().ResetPlayer();
+                isMouseDragging = false;
+            }
         }
 
 
